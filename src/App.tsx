@@ -4,10 +4,13 @@ import Header from './Components/Header';
 import Home from './Routes/Home';
 import Search from './Routes/Search';
 import Tv from './Routes/Tv';
+import {Helmet} from "react-helmet";
 
 function App() {
   return (
-    <Router>
+    <>
+      <Helmet><title>GONGFLIX</title></Helmet>
+      <Router>
       <Header />
       <Switch>
         <Route path="/gongflix/search">
@@ -24,6 +27,8 @@ function App() {
         </Route>
       </Switch>
     </Router>
+    </>
+    
   );
 }
 

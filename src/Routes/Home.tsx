@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPlayingMovies, getRatedMovies, getUpcomingMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight } from "react-icons/fi";
 import Detail from "../Detail";
 import loader_img from "../loading.gif";
 
@@ -158,10 +158,6 @@ const ArrowBtn = styled.div`
   align-items: center;
 `;
 
-const ArrowLeftBtn = styled(ArrowBtn)`
-  left: 0;
-`;
-
 const ArrowRightBtn = styled(ArrowBtn)`
   right: 0;
 `;
@@ -190,16 +186,6 @@ function Home() {
     ["movies", "Playing"],
     getPlayingMovies
   );
-  const newPlayingData = () => {
-    return Math.floor(Math.random()*20);
-  };
-  useEffect(() => {
-    // console.log(playingData);
-    // const oldPlayingData = () => {
-    //     return playingData?.results[];
-    // };
-    // console.log(oldPlayingData());
-  },[getPlayingMovies]);
   
   const { data: ratedData, isLoading: ratedLoading } = useQuery<IGetMoviesResult>(
     ["movies", "Rated"],
