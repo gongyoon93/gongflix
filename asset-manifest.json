@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.js": "/gongfilx/static/js/main.c4ea77e5.js",
-    "index.html": "/gongfilx/index.html",
-    "main.c4ea77e5.js.map": "/gongfilx/static/js/main.c4ea77e5.js.map"
+    "main.js": "/gongflix/static/js/main.aec52078.js",
+    "static/media/loading.gif": "/gongflix/static/media/loading.6e2a614018126bd0d04a.gif",
+    "index.html": "/gongflix/index.html",
+    "main.aec52078.js.map": "/gongflix/static/js/main.aec52078.js.map"
   },
   "entrypoints": [
-    "static/js/main.c4ea77e5.js"
+    "static/js/main.aec52078.js"
   ]
 }
