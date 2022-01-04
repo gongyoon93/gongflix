@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom"
+import {BrowserRouter as Router, Switch, Route, Redirect, BrowserRouter} from "react-router-dom"
 import Header from './Components/Header';
 import Home from './Routes/Home';
 import Search from './Routes/Search';
@@ -10,6 +10,7 @@ function App() {
   return (
     <>
       <Helmet><title>GONGFLIX</title></Helmet>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Router>
       <Header />
       <Switch>
@@ -27,6 +28,7 @@ function App() {
         </Route>
       </Switch>
     </Router>
+      </BrowserRouter> 
     </>
     
   );
