@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom"
 import Header from './Components/Header';
 import Home from './Routes/Home';
 import Search from './Routes/Search';
@@ -10,14 +10,17 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/tv">
-          <Tv />
-        </Route>
-        <Route path="/search">
+        <Route path="/gongflix/search">
           <Search />
         </Route>
-        <Route path="/">
+        <Route path={["/gongflix/tv","/gongflix/tv/:tvId"]}>
+          <Tv />
+        </Route>
+        <Route path={["/gongflix/movies","/gongflix/movies/:movieId"]} >
           <Home />
+        </Route>
+        <Route path="/gongflix">
+          <Redirect to="/gongflix/movies"/>
         </Route>
       </Switch>
     </Router>
