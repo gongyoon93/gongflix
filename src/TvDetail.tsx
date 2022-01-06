@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Scrollbar from "react-scrollbars-custom";
 import { AiFillStar } from "react-icons/ai";
 import { BiMoviePlay} from "react-icons/bi";
+import videoImg from "./defaultVideo.jpg";
 
 const Overlay = styled(motion.div)`
     position: fixed;
@@ -35,7 +36,7 @@ const BigCover = styled.div<{bgPhoto:string}>`
     height: 400px;
     background-position: center center;
     background-size: cover;
-    background-image: linear-gradient(to top, black, transparent),url(${props => props.bgPhoto});
+    background-image: linear-gradient(to top, black, transparent),url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
 `;
 
 const BigTitle = styled.h3`
@@ -153,7 +154,7 @@ const OtherVideo = styled.li`
 function TvDetail() {
     const history = useHistory();
     const {scrollY} = useViewportScroll();
-    const bigTvMatch = useRouteMatch<IRouterMatch>("/gongflix/tv/:tvId/:type");
+    const bigTvMatch = useRouteMatch<IRouterMatch>(["/gongflix/tv/:tvId/:type",`/gongflix/search/tv/:tvId`]);
     const { data: videoData, isLoading: videoLoading } = useQuery<IGetSeriesVideoResult>(
       ["tv", "Video"],  
       () => getSeriesVideo(bigTvMatch?.params.tvId || "")
@@ -166,12 +167,12 @@ function TvDetail() {
     return (
         
                 <BigMovie style={{top:scrollY.get() + 200}}
-                layoutId={bigTvMatch?.params.tvId + (bigTvMatch?.params.type === "0" ? "popular" : "rated")}
+                layoutId={bigTvMatch?.params.tvId + (bigTvMatch?.params.type === "0" ? "popular" : bigTvMatch?.params.type === "1" ? "rated" : "search")}
               >
                   <BigMovieWrapper>
                     {bigTvMatch && 
                       <>
-                        {videoData?.results.length !== 0 ? <YouTube videoId={videoKey === "" ? videoData?.results[0].key : videoKey} opts={{width:"100%"}}/> : <BigCover bgPhoto={makeImagePath(detailData?.backdrop_path+"")}/>}
+                        {videoData?.results.length !== 0 ? <YouTube videoId={videoKey === "" ? videoData?.results[0].key : videoKey} opts={{width:"100%"}}/> : <BigCover bgPhoto={detailData?.backdrop_path === null || detailData?.backdrop_path === undefined ? "" : makeImagePath(detailData?.backdrop_path+"")}/>}
                         <Scrollbar style={{width:"100%", height: "100%"}}>
                         <BigMovieContents>
                             <BigMovieAverage><AiFillStar />&nbsp;{detailData?.vote_average}</BigMovieAverage>

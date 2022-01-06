@@ -146,3 +146,21 @@ export function getSeriesDetail(tvId:string){
         response => response.json()
         );
 }
+
+interface ISearchInfo {
+    backdrop_path: string;
+    media_type: string;
+    name: string;
+    title: string;
+    id: number;
+}
+
+export interface ISearchInfoResult {
+    results: ISearchInfo[];
+}
+
+export function getSearchInfo(keyword:string){
+    return fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&language=${LANGUAGE}&query=${keyword}`).then(
+        response => response.json()
+        );
+}

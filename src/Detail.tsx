@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {motion, useViewportScroll} from "framer-motion"
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMovieDetail, getMovieVideo, IGetMoviesVideoResult, IMovieDetail } from "./api";
 import YouTube from "react-youtube";
@@ -10,6 +10,7 @@ import Scrollbar from "react-scrollbars-custom";
 import { AiFillStar } from "react-icons/ai";
 import { BiMoviePlay} from "react-icons/bi";
 import { relative } from "path/posix";
+import videoImg from "./defaultVideo.jpg";
 
 const Overlay = styled(motion.div)`
     position: fixed;
@@ -36,7 +37,8 @@ const BigCover = styled.div<{bgPhoto:string}>`
     height: 400px;
     background-position: center center;
     background-size: cover;
-    background-image: linear-gradient(to top, black, transparent),url(${props => props.bgPhoto});
+    background-image: linear-gradient(to top, black, transparent),
+    url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
 `;
 
 const BigTitle = styled.h3`
@@ -152,9 +154,12 @@ const OtherVideo = styled.li`
 
 
 function Detail() {
+  console.log('123');
     const history = useHistory();
     const {scrollY} = useViewportScroll();
-    const bigMovieMatch = useRouteMatch<IRouterMatch>("/gongflix/movies/:movieId/:type");
+    const location = useLocation();
+    const keyword = new URLSearchParams(location.search).get("keyword");
+    const bigMovieMatch = useRouteMatch<IRouterMatch>(["/gongflix/movies/:movieId/:type",`/gongflix/search/movies/:movieId`]);
     const { data: videoData, isLoading: videoLoading } = useQuery<IGetMoviesVideoResult>(
       ["movies", "Video"],  
       () => getMovieVideo(bigMovieMatch?.params.movieId || "")
@@ -167,12 +172,12 @@ function Detail() {
     return (
         
                 <BigMovie style={{top:scrollY.get() + 200}}
-                layoutId={bigMovieMatch?.params.movieId + (bigMovieMatch?.params.type === "0" ? "playing" : bigMovieMatch?.params.type === "1" ? "rated" : "upcoming")}
+                layoutId={bigMovieMatch?.params.movieId + (bigMovieMatch?.params.type === "0" ? "playing" : bigMovieMatch?.params.type === "1" ? "rated" : bigMovieMatch?.params.type === "2" ? "upcoming" : "search")}
               >
                   <BigMovieWrapper>
                     {bigMovieMatch && 
                       <>
-                        {videoData?.results.length !== 0 ? <YouTube videoId={videoKey === "" ? videoData?.results[0].key : videoKey} opts={{width:"100%"}}/> : <BigCover bgPhoto={makeImagePath(detailData?.backdrop_path+"")}/>}
+                        {videoData?.results.length !== 0 ? <YouTube videoId={videoKey === "" ? videoData?.results[0].key : videoKey} opts={{width:"100%"}}/> : <BigCover bgPhoto={detailData?.backdrop_path === null || detailData?.backdrop_path === undefined ? "" : makeImagePath(detailData?.backdrop_path+"")}/>}
                         <Scrollbar style={{width:"100%", height: "100%"}}>
                         <BigMovieContents>
                             <BigMovieAverage><AiFillStar />&nbsp;{detailData?.vote_average}</BigMovieAverage>

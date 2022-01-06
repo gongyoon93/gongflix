@@ -14,7 +14,7 @@ function App() {
       <Router>
       <Header />
       <Switch>
-        <Route path="/gongflix/search">
+        <Route path={["/gongflix/search","/gongflix/search/movies/:movieId","/gongflix/search/tv/:tvId"]}>
           <Search />
         </Route>
         <Route path={["/gongflix/tv","/gongflix/tv/:tvId"]}>

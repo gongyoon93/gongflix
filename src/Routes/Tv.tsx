@@ -8,6 +8,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import loader_img from "../loading.gif";
 import TvDetail from "../TvDetail";
+import videoImg from "../defaultVideo.jpg";
 
 const Wrapper = styled.div`
   background: black;
@@ -33,7 +34,7 @@ const Banner = styled.div<{ bgPhoto: string }>`
   justify-content: center;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgPhoto});
+    url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
   background-size: cover;
   background-position: center center;
 `;
@@ -73,7 +74,7 @@ const Row = styled(motion.div)`
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -158,10 +159,6 @@ const ArrowBtn = styled.div`
   align-items: center;
 `;
 
-const ArrowLeftBtn = styled(ArrowBtn)`
-  left: 0;
-`;
-
 const ArrowRightBtn = styled(ArrowBtn)`
   right: 0;
 `;
@@ -226,7 +223,7 @@ function Tv() {
       ) : (
         <>
           <Banner
-            bgPhoto={makeImagePath(popularData?.results[0].backdrop_path || "")}
+            bgPhoto={popularData?.results[0].backdrop_path === null ? "" : makeImagePath(popularData?.results[0].backdrop_path || "")}
           >
             <Title>{popularData?.results[0].name}</Title>
             <Overview>{popularData?.results[0].overview}</Overview>
@@ -255,7 +252,7 @@ function Tv() {
                           variants={boxVariants}
                           onClick={() => onBoxClicked(tv.id, 0)}
                           transition={{ type: "tween" }}
-                          bgPhoto={makeImagePath(tv.backdrop_path, "w500")}
+                          bgPhoto={tv.backdrop_path === null ? "" : makeImagePath(tv.backdrop_path, "w500")}
                         >
                           <Info variants={infoVariants}>
                             <h4>{tv.name}</h4>
@@ -290,7 +287,7 @@ function Tv() {
                           variants={boxVariants}
                           onClick={() => onBoxClicked(tv.id, 1)}
                           transition={{ type: "tween" }}
-                          bgPhoto={makeImagePath(tv.backdrop_path, "w500")}
+                          bgPhoto={tv.backdrop_path === null ? "" : makeImagePath(tv.backdrop_path, "w500")}
                         >
                           <Info variants={infoVariants}>
                             <h4>{tv.name}</h4>

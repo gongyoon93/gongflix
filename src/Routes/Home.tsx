@@ -8,6 +8,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import Detail from "../Detail";
 import loader_img from "../loading.gif";
+import videoImg from "../defaultVideo.jpg";
 
 const Wrapper = styled.div`
   background: black;
@@ -33,7 +34,7 @@ const Banner = styled.div<{ bgPhoto: string }>`
   justify-content: center;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgPhoto});
+    url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
   background-size: cover;
   background-position: center center;
 `;
@@ -73,7 +74,7 @@ const Row = styled(motion.div)`
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${props => props.bgPhoto === "" ? videoImg : props.bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -229,7 +230,7 @@ function Home() {
       ) : (
         <>
           <Banner
-            bgPhoto={makeImagePath(playingData?.results[0].backdrop_path || "")}
+            bgPhoto={playingData?.results[0].backdrop_path === null ? "" : makeImagePath(playingData?.results[0].backdrop_path || "")}
           >
             <Title>{playingData?.results[0].title}</Title>
             <Overview>{playingData?.results[0].overview}</Overview>
@@ -258,7 +259,7 @@ function Home() {
                           variants={boxVariants}
                           onClick={() => onBoxClicked(movie.id, 0)}
                           transition={{ type: "tween" }}
-                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                          bgPhoto={movie.backdrop_path === null ? "" : makeImagePath(movie.backdrop_path, "w500")}
                         >
                           <Info variants={infoVariants}>
                             <h4>{movie.title}</h4>
@@ -293,7 +294,7 @@ function Home() {
                           variants={boxVariants}
                           onClick={() => onBoxClicked(movie.id, 1)}
                           transition={{ type: "tween" }}
-                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                          bgPhoto={movie.backdrop_path === null ? "" : makeImagePath(movie.backdrop_path, "w500")}
                         >
                           <Info variants={infoVariants}>
                             <h4>{movie.title}</h4>
@@ -328,7 +329,7 @@ function Home() {
                           variants={boxVariants}
                           onClick={() => onBoxClicked(movie.id, 2)}
                           transition={{ type: "tween" }}
-                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                          bgPhoto={movie.backdrop_path === null ? "" : makeImagePath(movie.backdrop_path, "w500")}
                         >
                           <Info variants={infoVariants}>
                             <h4>{movie.title}</h4>

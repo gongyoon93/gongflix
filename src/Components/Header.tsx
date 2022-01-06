@@ -14,6 +14,7 @@ const Nav = styled(motion.nav)`
   font-size: 14px;
   padding: 20px 60px;
   color: white;
+  /* z-index: 999; */
 `;
 
 const Col = styled.div`
@@ -112,8 +113,8 @@ interface IForm {
 
 function Header() {
     const [searchOpen, setSearchOpen] = useState(false);
-    const homeMatch = useRouteMatch("/");
-    const tvMatch = useRouteMatch("/tv");
+    const homeMatch = useRouteMatch(["/gongflix/movies","/gongflix/movies/:movieId/:type"]);
+    const tvMatch = useRouteMatch(["/gongflix/tv","/gongflix/tv/:tvId/:type"]);
     const inputAnimation = useAnimation();
     const navAnimation = useAnimation();
     const {scrollY} = useViewportScroll();
@@ -139,9 +140,11 @@ function Header() {
         });
     },[scrollY, navAnimation]);
     const history = useHistory();
-    const {register, handleSubmit} = useForm<IForm>();
+    const {register, setValue, handleSubmit} = useForm<IForm>();
     const onValid = (data:IForm) => {
-      history.push(`/search?keyword=${data.keyword}`);
+      history.push(`/gongflix/search?keyword=${data.keyword}`);
+      setValue("keyword", "");
+    
     };
     return <Nav 
                 variants={navVariants}
@@ -162,7 +165,7 @@ function Header() {
                 <Items>
                     <Item>
                         <Link to="/gongflix/movies">
-                            영화 {homeMatch?.isExact && <Circle layoutId="circle" />}
+                            영화 {homeMatch && <Circle layoutId="circle" />}
                         </Link>
                     </Item>
                     <Item>
@@ -190,7 +193,7 @@ function Header() {
           </motion.svg>
           
           <Input
-            {...register("keyword", {required:true, minLength:2})}
+            {...register("keyword", {required:true})}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: "linear" }}
